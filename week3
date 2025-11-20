@@ -1,0 +1,148 @@
+┌──(kali㉿kali)-[~]
+└─$ cd /var/www/html                                    
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html]
+└─$ sudo rm -rf dvwa                                    
+[sudo] password for kali: 
+Sorry, try again.
+[sudo] password for kali: 
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html]
+└─$ sudo git clone https://github.com/digininja/DVWA.git
+Cloning into 'DVWA'...
+remote: Enumerating objects: 5373, done.
+remote: Total 5373 (delta 0), reused 0 (delta 0), pack-reused 5373 (from 1)
+Receiving objects: 100% (5373/5373), 2.58 MiB | 210.00 KiB/s, done.
+Resolving deltas: 100% (2667/2667), done.
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html]
+└─$ sudo mv DVWA dvwa                                   
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html]
+└─$ chmod -R 777 dvwa/                                  
+                                                                                                    
+┌──(kali㉿kali)-[/var/www/html]
+└─$ cd dvwa/config                            
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html/dvwa/config]
+└─$ config.inc.php.dist                                 
+config.inc.php.dist: command not found
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html/dvwa/config]
+└─$ sudo cp config.inc.php.dist config.inc.php 
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html/dvwa/config]
+└─$ sudo nano config.inc.php                  
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html/dvwa/config]
+└─$ sudo service mysql start
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html/dvwa/config]
+└─$ sudo mysql -u root -p   
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| dvwa               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.016 sec)
+
+MariaDB [(none)]> drop database dvwa;
+Query OK, 2 rows affected (0.015 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [(none)]> create database dvwa;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| dvwa               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.001 sec)
+
+MariaDB [(none)]> select user, Host FROM mysql.user WHERE user='admin' and Host='127.0.0.1';
++-------+-----------+
+| User  | Host      |
++-------+-----------+
+| admin | 127.0.0.1 |
++-------+-----------+
+1 row in set (0.002 sec)
+
+MariaDB [(none)]> drop user 'admin'@127.0.0.1;
+Query OK, 0 rows affected (0.017 sec)
+
+MariaDB [(none)]> select user, Host FROM mysql.user WHERE user='admin' and Host='127.0.0.1';
+Empty set (0.001 sec)
+
+MariaDB [(none)]> create user 'admin'@127.0.0.1 identified by 'password';
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> grant all privileges on dvwa.* to 'admin'@127.0.0.1 identified by 'password';
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> exit;
+Bye
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html/dvwa/config]
+└─$ cd ..              
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html/dvwa]
+└─$ cd ..
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www/html]
+└─$ cd ..
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var/www]
+└─$ cd ..
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/var]
+└─$ cd ..
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/]
+└─$ cd /etc/php     
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/etc/php]
+└─$ ls
+8.4
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/etc/php]
+└─$ cd 8.4/apache2
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/etc/php/8.4/apache2]
+└─$ ls
+conf.d  php.ini
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/etc/php/8.4/apache2]
+└─$ sudo nano php.ini       
+[sudo] password for kali: 
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/etc/php/8.4/apache2]
+└─$ http://127.0.0.1/dvwa/
+zsh: no such file or directory: http://127.0.0.1/dvwa/
+                                                                                                                                                                                                                                           
+┌──(kali㉿kali)-[/etc/php/8.4/apache2]
+└─$ sudo service apache2 start
+[sudo] password for kali: 
